@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+		http://www.springframework.org/schema/tx
+		http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+		">
+
+		<bean id="dataSource" class="org.logicalcobwebs.proxool.ProxoolDataSource">
+		<property name="driver" value="com.mysql.jdbc.Driver" />
+		<!-- 用户名，密码写在 url 中，属性之间用 &amp; （此处为转义 字符）隔开 -->
+		<property name="driverUrl"
+			value="jdbc:mysql://localhost:3306/phrv2?user=root&amp;password=bacmp123&amp;useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;failOverReadOnly=false" />
+		<!-- <property name="driverUrl" value="jdbc:mysql://localhost/venus?user=develop&amp;password=develop&amp;useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;failOverReadOnly=false" 
+			/> -->
+		<!-- 此处用户名可不写，但属性必须存在 -->
+		<property name="user" value="root" />
+		<!-- 此处密码可不写，但密码属性必须存在 -->
+		<property name="password" value="" />
+		<!-- 数据源的别名 -->
+		<!--<property name="alias" value="test" /> -->
+		<!-- proxool 自动侦察各个连接状态的时间间隔 ( 毫秒 ), 侦察到空闲的连接就马上回收 , 超时的销毁 默认 30 秒） -->
+		<!-- <property name="houseKeepingSleepTime" value="30000" /> -->
+		<!-- 最少保持的空闲连接数 （默认 2 个） -->
+		<property name="prototypeCount" value="5" />
+		<!-- 最大连接数 （默认 5 个） -->
+		<property name="maximumConnectionCount" value="50" />
+		<!-- 最小连接数 （默认 2 个） -->
+		<property name="minimumConnectionCount" value="2" />
+		<property name="trace" value="true" />
+		<property name="verbose" value="true" />
+	</bean>
+	
+	
+	<bean id="dataSource_sql" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName">
+			<value>com.microsoft.sqlserver.jdbc.SQLServerDriver</value>
+		</property>
+		<property name="url">
+			<value>jdbc:sqlserver://172.16.47.194:1433;DatabaseName=finv2</value>
+		</property>
+		<property name="username">
+			<value>sa</value>
+		</property>
+		<property name="password">
+			<value>bacmp123</value>
+		</property>
+		<property name="initialSize">
+			<value>5</value>
+		</property>
+		<property name="maxActive">
+			<value>10</value>
+		</property>
+		<property name="defaultAutoCommit"><value>false</value></property>
+	</bean>
+
+	<bean id="dataSource_mysql" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName">
+			<value>com.mysql.jdbc.Driver</value>
+		</property>
+		<property name="url">
+			<value>jdbc:mysql://127.0.0.1:3306/test</value>
+		</property>
+		<property name="username">
+			<value>root</value>
+		</property>
+		<property name="password">
+			<value>bacmp123</value>
+		</property>
+		<property name="initialSize">
+			<value>8</value>
+		</property>
+		<property name="maxActive">
+			<value>10</value>
+		</property>
+		<property name="defaultAutoCommit"><value>false</value></property>
+	</bean>
+
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>
+
+	<bean id="jdbcTemplate_sql" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource">
+			<ref bean="dataSource_sql" />
+		</property>
+	</bean>
+
+	<bean id="jdbcTransactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>
+	
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+	</bean>
+
+	<bean id="runsql" class="ba.base.Runsql">
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
+	</bean>
+
+	<bean id="extUpload2" class="ba.util.upload2.ExtUpload">
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
+	</bean>
+	
+	<!-- custom bean -->
+	<bean id="boVdsLogin" class="healthArchive.Bo_Vds_Login">
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
+	</bean>
+
+	<tx:annotation-driven />
+
+</beans>
+
+
+<!-- <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"> 
+	<property name="dataSource"> <ref bean="dataSource" /> </property> </bean> 
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate"> 
+	<constructor-arg ref="dataSource" /> </bean> class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate"> 
+	<constructor-arg ref="dataSource" /> dataSource:: <property name="defaultAutoCommit"><value>false</value></property> -->
