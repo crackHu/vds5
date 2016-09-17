@@ -3,4 +3,5 @@
 .myumldata
 .project
 
-WebRoot\WEB-INF\lib
+WebRoot/WEB-INF/lib
+build
