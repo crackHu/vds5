@@ -15,7 +15,7 @@
 		<property name="driver" value="com.mysql.jdbc.Driver" />
 		<!-- 用户名，密码写在 url 中，属性之间用 &amp; （此处为转义 字符）隔开 -->
 		<property name="driverUrl"
-			value="jdbc:mysql://172.16.2.114/phrv2?user=root&amp;useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;failOverReadOnly=false" />
+			value="jdbc:mysql://localhost:3306/phrv2?user=root&amp;useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;failOverReadOnly=false" />
 		<!-- <property name="driverUrl" value="jdbc:mysql://localhost/venus?user=develop&amp;password=develop&amp;useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;failOverReadOnly=false" 
 			/> -->
 		<!-- 此处用户名可不写，但属性必须存在 -->
