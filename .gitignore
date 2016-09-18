@@ -6,7 +6,7 @@
 WebRoot/WEB-INF/lib/*
 build/*
 
-bean_prjX.xml
+src/prjX/conf/bean_prjX.xml
 
 src_react_app/node_modules/*
 src_react_app/*.zip
