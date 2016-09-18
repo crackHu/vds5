@@ -3,5 +3,8 @@
 .myumldata
 .project
 
-WebRoot/WEB-INF/lib
-build
+WebRoot/WEB-INF/lib/*
+build/*
+src_react_app/node_modules/*
+
+bean_prjX.xml
