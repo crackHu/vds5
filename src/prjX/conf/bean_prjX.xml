@@ -118,6 +118,9 @@
 	<bean id="boVdsLogin" class="healthArchive.Bo_Vds_Login">
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
+	<bean id="boVdsUnified" class="healthArchive.Bo_vds_unified">
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
+	</bean>
 
 	<tx:annotation-driven />
 

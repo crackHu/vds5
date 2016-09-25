@@ -6,7 +6,9 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import net.sf.json.JSONArray;
@@ -41,7 +43,7 @@ public class Bo_Vds_Login extends BoBase {
 	public void setSecondJdbcTemplate(JdbcTemplate secondJdbcTemplate) {
 		this.secondJdbcTemplate = secondJdbcTemplate;
 	}
-
+	
 	//http://localhost:8080/vds5s1/ba/boCallMethodPC.jsp?data={%22sql%22:%22%22,%22boName%22:%22boVdsLogin%22,%22funcName%22:%22login%22,%22procedure%22:%22test%22,%22pageNo%22:1,%22pageSize%22:20}
 	@Transactional(propagation = Propagation.REQUIRED)
 	public JSONObject login(JSONObject jDataIn) throws Exception {
@@ -117,61 +119,6 @@ public class Bo_Vds_Login extends BoBase {
 		}
 		return jDataOut;
 	}
-
-	/**
-	 * 添加日志记录类
-	 * 
-	 * @param memberId
-	 * @param content
-	 */
-	@Transactional(propagation = Propagation.REQUIRED)
-	public void addActionLog(String memberId, String title, String type,
-			String content, String logNumber, String timeConsuming, String msg,
-			String resultCode, String orders) {
-
-		String msgs = null;
-		if (resultCode != null) {
-			if (!resultCode.equals("1")) {
-				if (msg != null && !msg.equals("")) {
-					msgs = msg.replaceAll("'", "''");
-					resultCode = "-99";
-					msg = "SQL语句出错";
-				} else {
-					resultCode = "-98";
-					msg = "程序代码出错";
-				}
-
-			} else {
-				msgs = content;
-			}
-		} else {
-			if (msg != null && !msg.equals("")) {
-				msgs = msg.replaceAll("'", "''");
-			} else {
-				msgs = content.replaceAll("'", "''");
-			}
-		}
-		String sql = "";
-		// 记录id
-		String actionLogid = UUID.randomUUID().toString();
-		sql = "INSERT into med_actionlog (id,createDate,modifyDate,memberId,title,type,content,logNumber,timeConsuming,resultCode,resultMsg,orders) "
-				+ "values ('"
-				+ actionLogid
-				+ "',now(),now(),'"
-				+ memberId
-				+ "','"
-				+ title
-				+ "','"
-				+ type
-				+ "','"
-				+ msgs
-				+ "','"
-				+ logNumber
-				+ "','"
-				+ timeConsuming
-				+ "','"
-				+ resultCode
-				+ "','" + msg + "','" + orders + "')";
-		secondJdbcTemplate.update(sql);
-	}
+	
+	
 }
